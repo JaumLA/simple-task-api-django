@@ -1,0 +1,67 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# Python environment files
+pip-wheel-metadata/
+*.egg-info/
+
+# Django database
+db.sqlite3
+db.sqlite3-journal
+
+# Django local settings / secrets
+local_settings.py
+.env.*
+
+# Static and media (collectstatic output and uploaded files)
+static/
+staticfiles/
+media/
+
+# Logs
+*.log
+
+# Don't ignore migrations (they should be committed) — leave migrations/ tracked
+
+# Testing / coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# MyPy / caches
+.mypy_cache/
+*.cache
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (if you add frontend tooling later)
+node_modules/
+
+# Celery
+celerybeat-schedule
+
+# Misc
+*.pem
+*.key
+
+# Examples (uncomment if you use them)
+# .env
+# .venv
