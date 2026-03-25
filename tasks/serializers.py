@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import Task
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
     status = serializers.ReadOnlyField()
     remaining_time = serializers.SerializerMethodField()
 
@@ -16,8 +15,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
             'init_time',
             'end_time',
             'remaining_time',
-            "status",
-            'user'
+            "status"
         )
         extra_kwargs = {
             'url': {'view_name': 'detail', 'lookup_field': 'pk'}
