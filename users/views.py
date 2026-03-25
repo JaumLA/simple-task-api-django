@@ -1,12 +1,16 @@
-from django.contrib.auth.models import AbstractUser
-from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from users.serializers import UserSerializer
+from users.models import User
 
-class UserList(generics.ListAPIView):
-  queryset = AbstractUser.objects.all()
+class UserViewSet(ModelViewSet):
+  queryset = User.objects.all().prefetch_related("tasks")
   serializer_class = UserSerializer
+  permission_classes = [IsAuthenticated]
 
-class UserDetail(generics.RetrieveAPIView):
-  queryset = AbstractUser.objects.all()
-  serializer_class = UserSerializer
+  def get_queryset(self):
+    if self.request.user.is_superuser:
+      return User.objects.all().prefetch_related("tasks")
+
+    return User.objects.filter(id=self.request.user.id).prefetch_related("tasks")
