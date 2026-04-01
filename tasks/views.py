@@ -1,33 +1,20 @@
-from rest_framework import generics
 from rest_framework import permissions
-from rest_framework.response import Response
-from rest_framework import renderers
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
+
 
 from .models import Task
 from .serializers import TaskSerializer
+from .filters import TaskFilter
 from .permissions import IsOwner
 
-class TaskHighlight(generics.ListAPIView):
-  queryset = Task.objects.order_by("init_time")
-  renderer_classes = [renderers.StaticHTMLRenderer]
-
-  def get(self, request, *arg, **kwargs):
-    task = self.get_object()
-    return Response(task.highlighted)
-
-class TaskList(generics.ListCreateAPIView):
-  queryset = Task.objects.order_by("init_time")
+class TaskViewSet(ModelViewSet):
+  queryset = Task.objects.order_by("init_time").prefetch_related('user')
   serializer_class = TaskSerializer
   permission_classes = [permissions.IsAuthenticated, IsOwner]
 
-  def perform_create(self, serializer):
-    serializer.save(user=self.request.user)
+  filterset_class = TaskFilter
 
-  def get_queryset(self):
-    user = self.request.user
-    return Task.objects.filter(user=user).order_by("init_time")
-
-class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
-  queryset = Task.objects.all()
-  serializer_class = TaskSerializer
-  permission_classes = [permissions.IsAuthenticated, IsOwner]
+  @action(detail=True, methods=['patch'])
+  def finish_early(self, request, pk=None):
+    pass

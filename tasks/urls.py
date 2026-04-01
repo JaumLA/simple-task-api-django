@@ -1,11 +1,12 @@
-from django.urls import path
+from django.urls import include, path
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.routers import DefaultRouter
+
 from . import views
 
-urlpatterns = [
-  path("", views.TaskList.as_view(), name="index"),
-  path("<int:pk>/", views.TaskDetail.as_view(), name="detail"),
-  path("<int:pk>/highlight/", views.TaskHighlight.as_view(), name="highlight"),
-]
+router = DefaultRouter()
+router.register(r"tasks", views.TaskViewSet, basename='task')
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = [
+  path("", include(router.urls)),
+]
