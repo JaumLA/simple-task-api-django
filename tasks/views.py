@@ -15,6 +15,9 @@ class TaskViewSet(ModelViewSet):
 
   filterset_class = TaskFilter
 
+  def perform_create(self, serializer):
+    serializer.save(user=self.request.user)
+
   @action(detail=True, methods=['patch'])
   def finish_early(self, request, pk=None):
     pass
