@@ -33,3 +33,12 @@ class TaskViewSet(ModelViewSet):
       return Response(serializer.data, status=status.HTTP_200_OK)
     else:
       return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+  @action(detail=False, methods=['get'])
+  def current_tasks(self, request):
+    time_now = timezone.localtime().time()
+    tasks = self.get_queryset().filter(
+      init_time__lte=time_now, end_time__gte=time_now
+    )
+    serializer = self.get_serializer(tasks, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
