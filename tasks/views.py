@@ -1,7 +1,9 @@
-from rest_framework import permissions
+from django.utils import timezone
+
+from rest_framework import permissions, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
-
+from rest_framework.response import Response
 
 from .models import Task
 from .serializers import TaskSerializer
@@ -20,4 +22,14 @@ class TaskViewSet(ModelViewSet):
 
   @action(detail=True, methods=['patch'])
   def finish_early(self, request, pk=None):
-    pass
+    task = self.get_object()
+    time_now = timezone.localtime()
+    
+    if task.status == Task.TaskStatus.IN_PROGRESS and task.init_time < time_now.time():
+      task.status = Task.TaskStatus.COMPLETED
+      task.end_time = time_now.replace(second=0, microsecond=0).time()
+      task.save()
+      serializer = self.get_serializer(task)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+      return Response(status=status.HTTP_400_BAD_REQUEST)
