@@ -15,6 +15,9 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+from datetime import timedelta
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -125,7 +128,21 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication'],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50
+}
+
+SIMPLE_JWT = {
+    # Para desenvolvimento, 60 minutos é um tempo confortável.
+    # Em produção de sistemas bancários, isso seria 5 ou 10 minutos.
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60), 
+    
+    # 1 dia para o refresh é um padrão excelente
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    
+    # Define como o token deve ser chamado no cabeçalho (O padrão é Bearer)
+    'AUTH_HEADER_TYPES': ('Bearer',), 
 }
