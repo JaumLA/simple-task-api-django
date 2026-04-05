@@ -34,6 +34,19 @@ class TaskViewSet(ModelViewSet):
     else:
       return Response(status=status.HTTP_400_BAD_REQUEST)
     
+  @action(detail=True, methods=['patch'])
+  def start_task(self, request, pk=None):
+    task = self.get_object()
+    time_now = timezone.localtime()
+
+    if task.end_time < time_now.time():
+      task.status = Task.TaskStatus.IN_PROGRESS
+      task.save()
+      serializer = self.get_serializer(task)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+      return Response(status=status.HTTP_400_BAD_REQUEST)
+  
   @action(detail=False, methods=['get'])
   def current_tasks(self, request):
     time_now = timezone.localtime().time()
