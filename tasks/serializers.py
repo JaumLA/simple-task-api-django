@@ -34,13 +34,13 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 			raise serializers.ValidationError("End time must be greater than init time.")
 
 		user = self.context['request'].user
+
+		# Check if a task is over another task's time
 		filtered_tasks = Task.objects.filter(
 			user=user,
 			init_time__lt=attrs['end_time'],
 			end_time__gt=attrs['init_time']
 		)
-
-		# Check if a task is over another task's time
 		if self.instance:
 			filtered_tasks = filtered_tasks.exclude(id=self.instance.id)
 
