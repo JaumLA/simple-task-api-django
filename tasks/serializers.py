@@ -32,8 +32,22 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
         return f"{horas:02d}:{minutos:02d}:{segundos:02d}"
 
-    def validate(self, attrs):
-        if attrs['end_time'] < attrs['init_time']:
-            raise serializers.ValidationError("End time must be greater than init time.")
-        # Keep TimeField values as times here; convert to datetimes when saving.
-        return attrs
+	def validate(self, attrs):
+		if attrs['end_time'] < attrs['init_time']:
+			raise serializers.ValidationError("End time must be greater than init time.")
+
+		user = self.context['request'].user
+		filtered_tasks = Task.objects.filter(
+			user=user,
+			init_time__lt=attrs['end_time'],
+			end_time__gt=attrs['init_time']
+		)
+
+		# Check if a task is over another task's time
+		if self.instance:
+			filtered_tasks = filtered_tasks.exclude(id=self.instance.id)
+
+		if filtered_tasks.exists():
+			raise serializers.ValidationError("Task overlaps with another task.")
+
+		return attrs
