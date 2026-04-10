@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tasks', '0003_alter_task_user'),
+        ("tasks", "0003_alter_task_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='status',
-            field=models.CharField(choices=[('Pending', 'Pending'), ('In Progress', 'In Progress'), ('Completed', 'Completed'), ('Missed', 'Missed')], default='Pending', max_length=20),
+            model_name="task",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("Pending", "Pending"),
+                    ("In Progress", "In Progress"),
+                    ("Completed", "Completed"),
+                    ("Missed", "Missed"),
+                ],
+                default="Pending",
+                max_length=20,
+            ),
         ),
     ]

@@ -7,14 +7,16 @@ from users.serializers import UserSerializer, RegisterSerializer
 from users.models import User
 from tasks.models import Task
 
+
 class UserViewSet(ModelViewSet):
-  queryset = User.objects.all().prefetch_related(
-    Prefetch('tasks', queryset=Task.objects.order_by('init_time'))
-  )
-  serializer_class = UserSerializer
-  permission_classes = [IsAuthenticated]
+    queryset = User.objects.all().prefetch_related(
+        Prefetch("tasks", queryset=Task.objects.order_by("init_time"))
+    )
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class RegisterCreateAPIView(CreateAPIView):
-  queryset = User.objects.all()
-  permission_classes = [AllowAny]
-  serializer_class = RegisterSerializer
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = RegisterSerializer

@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tasks', '0005_alter_task_status'),
+        ("tasks", "0005_alter_task_status"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='task',
-            name='end_time',
-            field=models.DateTimeField(verbose_name='End time'),
+            model_name="task",
+            name="end_time",
+            field=models.DateTimeField(verbose_name="End time"),
         ),
         migrations.AlterField(
-            model_name='task',
-            name='init_time',
-            field=models.DateTimeField(verbose_name='Init time'),
+            model_name="task",
+            name="init_time",
+            field=models.DateTimeField(verbose_name="Init time"),
         ),
     ]

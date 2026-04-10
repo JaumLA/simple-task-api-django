@@ -4,9 +4,9 @@ from .views import UserViewSet, RegisterCreateAPIView
 
 router = DefaultRouter()
 
-router.register(r'users', UserViewSet, basename="user")
+router.register(r"users", UserViewSet, basename="user")
 
 urlpatterns = [
-  path("users/register/", RegisterCreateAPIView.as_view(), name="register-user"),
-  path("", include(router.urls)),
+    path("users/register/", RegisterCreateAPIView.as_view(), name="register-user"),
+    path("", include(router.urls)),
 ]

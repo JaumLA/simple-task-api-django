@@ -5,20 +5,36 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Task',
+            name="Task",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.CharField(max_length=200)),
-                ('init_time', models.TimeField(default=django.utils.timezone.now, verbose_name='Init time')),
-                ('end_time', models.TimeField(default=django.utils.timezone.now, verbose_name='End time')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("description", models.CharField(max_length=200)),
+                (
+                    "init_time",
+                    models.TimeField(
+                        default=django.utils.timezone.now, verbose_name="Init time"
+                    ),
+                ),
+                (
+                    "end_time",
+                    models.TimeField(
+                        default=django.utils.timezone.now, verbose_name="End time"
+                    ),
+                ),
             ],
         ),
     ]
