@@ -23,7 +23,28 @@ class TaskViewSet(ModelViewSet):
   def perform_create(self, serializer):
     serializer.save(user=self.request.user)
 
-  @action(detail=True, methods=['patch'])
+    @action(detail=False, methods=["post"])
+    def start_day(self, request):
+        time_now = timezone.localtime().time()
+        task = self._get_current_task(request.user)
+        if task is not None:
+            _ = self._start_specific_task(task)
+
+        finished_tasks = self.get_queryset().filter(
+            user=request.user, end_time__lte=time_now
+        )
+        finished_tasks.update(status=Task.TaskStatus.COMPLETED)
+
+        pending_tasks = self.get_queryset().filter(
+            user=request.user, init_time__gt=time_now
+        )
+        pending_tasks.update(status=Task.TaskStatus.PENDING)
+        user_tasks = self.get_queryset().filter(user=request.user)
+        serializer = self.get_serializer(user_tasks, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'])
   def finish_early(self, request, pk=None):
     task = self.get_object()
     time_now = timezone.localtime()
