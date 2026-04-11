@@ -90,7 +90,7 @@ class TaskViewSet(ModelViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=["get"])
-    def current_tasks(self, request):
-        tasks = self._get_current_task(request.user)
-        serializer = self.get_serializer(tasks, many=True)
+    def current_task(self, request):
+        task = self._get_current_task(request.user)
+        serializer = self.get_serializer(task)
         return Response(serializer.data, status=status.HTTP_200_OK)
