@@ -33,7 +33,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     def validate(self, attrs):
         if attrs["end_time"] <= attrs["init_time"]:
             raise serializers.ValidationError(
-                "End time must be greater than init time."
+                {"end_time": "End time must be greater than init time."}
             )
 
         user = self.context["request"].user
